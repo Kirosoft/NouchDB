@@ -1,13 +1,13 @@
 NouchDB
 =======
 
-I really like CouchDB no sql database but required a lightweight embeddable database that would sync with a 
-master database (the Erlang framework that CouchbDB relies on is a non-starter as an embedded system IMHO).
-PouchDB is great but is web only (javascript) - so this project will not fill my (probably) very niche requirement 
-of a PouchDB like client to CouchDB that will run on the .NET platform. I also needed Mono compatability to work 
+I really like the CouchDB NoSQL database but I needed a lightweight embeddable database that would sync with a 
+master CouchDB database (the Erlang framework that CouchbDB relies on is a non-starter as an embedded system IMHO).
+PouchDB is great but is a web only (javascript). I could not find .NET version of PouchDB so this project is
+designed to fill my (probably) very niche requirement. I also needed Mono 2.6 compatability to work 
 within a Unity3D project. My plan is to use this module as the basis of network sycnhronisable objects in a 
-Unity3D MMO game client (so no funky .NET 4+ async calls). I will probably release a Unity version of this in a 
-few weeks.
+Unity3D MMO game client (so no funky .NET 4+ async calls allowed). I will probably release a Unity version of this
+in a few weeks....
 
 
 * .NET 3.5+/Mono 2.6+ compatible
