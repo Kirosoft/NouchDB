@@ -1,21 +1,29 @@
 NouchDB
 =======
 
-Embedded .NET NoSQL database that will sync with a CouchDB server
+I really like CouchDB no sql database but required a lightweight embeddable database that would sync with a 
+master database (the Erlang framework that CouchbDB relies on is a non-starter as an embedded system IMHO).
+PouchDB is great but is web only (javascript) - so this project will not fill my (probably) very niche requirement 
+of a PouchDB like client to CouchDB that will run on the .NET platform. I also needed Mono compatability to work 
+within a Unity3D project. My plan is to use this module as the basis of network sycnhronisable objects in a 
+Unity3D MMO game client (so no funky .NET 4+ async calls). I will probably release a Unity version of this in a 
+few weeks.
 
 
 * .NET 3.5+/Mono 2.6+ compatible
 * Embedded high performance key/value store based upon levelDB
 * Master -> Slave replication with a CouchDB server
-* MVCC (multiversion concurrency control)
-* Atomic commit support
-* Simple POCO class persistance model
+* MVCC - multiversion concurrency control - each update causes a new record commit. No data is lost we just keep track  
+  of the latest revision
+* Atomic commit support via leveldb (supports batch commits)
+* Simple POCO class persistance model (uses service stack POCO/json serialisation methods)
 
+In principle this is portable to all platforms that can support Mono but I am currently focused on Windows as a platform.
 
-Uses:
+Dependendant projects:
 
-leveldb from google as a high performance low level key/value store
-leveldb-sharp to convert level db 'c' module into a .net compatible assembly
+leveldb from google as a high performance low level key/value store (cross platform 'c' module)
+leveldb-sharp to convert level db 'c' module into a .NET compatible assembly (not yet tested on Mono)
 servicestack.text for fast Json serialisation/deserialisation
 
 
@@ -23,34 +31,25 @@ Eventual consistency/Offline operation/Master-Slave synchronisation
 
 This project aims to build high performance no-sql database that can be embedded locally within .NET/mono projects.
 The master-slave MVCC replication model guarantees eventual data consistency. This is handy if you would like a DB
-to continue operating while a network connection to the remote master database is offline and then automatically 
-synchronise once the master database becomes available once more.
+to continue operating with a local database while a network connection to a remote master database is offline 
+and then automatically synchronise once the master database becomes available once more.
 
 
+V0.1 - Limitations
 
-V0.1 - Limitations (apart from being a very early alpha release)
-
+* it is an early alpha so most things have not been fully tested and many probably desireable features are missing
 * Currently only master-slave replication is supported.
 * The master-slave replication model will basically prioritise server data over any local data.
-* Although it is planned to supported nested conflicting revisions - this is currently not fully supported
+* Although it is planned to supported nested conflicting revisions - this is currently not fully implemented (see the Node class)
 
 
-Currently Supported Model:
+Currently Supported features:
 
-----------------
-|Couchdb server|<----------|
-----------------           |
-      |                    |
-      |                    |
-      | replication        |  couchdb - http API
-      |                    |
-      V                    |
-----------------           |
-| Client       | --------->|
-----------------
 
 Data commits from the client are written directly to the remote DB instance and then the localDB is updated
-locally via replication.
+locally via replication. So, in this model the server is the master and many slaves remain consistent with the server
+data (as required). Locally committed data is currently lost when writtem locally (no slave master replication), but the
+master server can be updated via the couchdb http api.
 
 
 Local database commit example
@@ -94,21 +93,4 @@ Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateW
 Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984", "stars",true)));
 Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984", "stars")));
 //Debug.WriteLine(nouchDB.AllDocs());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
