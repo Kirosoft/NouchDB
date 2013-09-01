@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\db\version_set_test.cc" />
+    <ClCompile Include="..\util\testharness.cc" />
+    <ClCompile Include="..\util\testutil.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\util\testharness.h" />
+    <ClInclude Include="..\util\testutil.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0936D866-FBC2-480C-83CB-DB74DCD86E8B}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <OutDir>$(SolutionDir)dbg\</OutDir>
+    <IntDir>$(SolutionDir)dbg\tmp\</IntDir>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <OutDir>$(SolutionDir)rel\</OutDir>
+    <IntDir>$(SolutionDir)rel\tmp\</IntDir>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>nmake -f makefile.msvc CFG=dbg SRC=.. versionsettest</NMakeBuildCommandLine>
+    <NMakeOutput>$(OutDir)version_set_test.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;LEVELDB_PLATFORM_WINDOWS;OS_WIN;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeReBuildCommandLine>nmake -f makefile.msvc clean &amp;&amp; nmake -f makefile.msvc CFG=dbg SRC=.. versionsettest</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f makefile.msvc clean</NMakeCleanCommandLine>
+    <NMakeIncludeSearchPath>$(MSBuildProjectDirectory)\..;$(MSBuildProjectDirectory)\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>nmake -f makefile.msvc CFG=rel SRC=.. versionsettest</NMakeBuildCommandLine>
+    <NMakeOutput>$(OutDir)version_set_test.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;LEVELDB_PLATFORM_WINDOWS;OS_WIN;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeCleanCommandLine>nmake -f makefile.msvc clean</NMakeCleanCommandLine>
+    <NMakeIncludeSearchPath>$(MSBuildProjectDirectory)\..;$(MSBuildProjectDirectory)\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>nmake -f makefile.msvc clean &amp;&amp; nmake -f makefile.msvc CFG=rel SRC=.. versionsettest</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

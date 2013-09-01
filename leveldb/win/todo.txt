@@ -1,0 +1,19 @@
+* python scripts that builds everything, runs all the tests and uploads results to s3
+* write web page
+* add snappy
+* test app exercising dll APIs in the .zip file
+<-- make a release
+* show proc in db_bench for windows
+<-- make a release
+* add C# wrapper
+<-- make a release
+
+DONE:
+* fix filename_test.cc failures
+* look at new condvar implementation or one from http://codesearch.google.com/#cZwlSNS7aEw/external/chromium/base/condition_variable_win.cc
+* figure out db_test.cc failure
+* figure out corruption_test.cc failure it seems in TEST(CorruptionTest, Recovery) there's a timing issue since setting breakpoints on both Corrupt() lines (i.e. delaying them) makes the test pass
+* fix table_test.cc failure
+* fix c_test.c to not free() memory allocated in a dll
+* add project for c_test.c which uses the dll
+* add memenv.cc, project for memenv_test.cc

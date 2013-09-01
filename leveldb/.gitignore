@@ -1,0 +1,11 @@
+*suo
+*sdf
+*user
+dbg/
+rel/
+*pyc
+rel64bit/
+dbg64bit
+*.zip
+dbbench/
+tmp/

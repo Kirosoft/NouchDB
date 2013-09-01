@@ -1,0 +1,286 @@
+# nmake -f makefile.msvc
+# Arguments:
+# CFG=dbg|rel (default: dbg)
+# PLATFORM=X32|X64 usually set in the x32 and x64 cross tools Visual Studio command prompt
+# SRC= : default: empty, where the source code lives
+
+
+# top-level source code dir
+!if "$(SRC)"==""
+SRC=.
+!endif
+
+!if "$(CFG)"==""
+CFG=dbg
+!endif
+
+# O is directory where object and binary files go
+O = $(CFG)
+!if "$(PLATFORM)"=="X64"
+O = $(O)64bit
+!endif
+
+# temporary directory, this is where object files go
+OT = $(O)\tmp
+
+CC = cl.exe
+
+CFLAGS = /nologo /c
+
+!if "$(PLATFORM)"=="X64"
+CFLAGS = $(CFLAGS) /D "WIN64" /D "_WIN64"
+!else
+CFLAGS = $(CFLAGS) /D "WIN32" /D "_WIN32"
+!endif
+
+# /W3  : bump warnings level from 1 to 3
+# /WX  : treat warnings as errors
+# /GR- : disable RTTI
+# /Zi  : enable debug information
+# /GS  : enable security checks
+# /Gy  : separate functions for linker
+CFLAGS = $(CFLAGS) /W3 /WX /GR- /Zi /GS /Gy
+
+# /EHs-c- : disable C++ exceptions (generates ~17% smaller binaries)
+CFLAGS = $(CFLAGS) /EHs-c- /D "_HAS_EXCEPTIONS=0"
+
+# /EHsc : enable exceptions
+#CFLAGS = $(CFLAGS) /EHsc
+
+# disable selective warnings
+# 4018: signed/unsigned mismatch
+# 4800: 'unsigned char' : forcing value to bool 'true' or 'false' (performance warning)
+# 4355: 'this' : used in base member initializer list
+# 4244: '=' : conversion from 'uint64_t' to 'int', possible loss of data
+# 4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _strdup.
+CFLAGS = $(CFLAGS) /D _CRT_SECURE_NO_WARNINGS
+CFLAGS = $(CFLAGS) /wd4018 /wd4800 /wd4355 /wd4244 /wd4996
+
+!if "$(PLATFORM)"=="X64"
+# 4267: 'argument' : conversion from 'size_t' to 'uint32_t', possible loss of data
+CFLAGS = $(CFLAGS) /wd4267
+!endif
+
+!if "$(CFG)"=="rel"
+# /GL  : enable link-time code generation
+# /O2  : optimization level, maximize speed
+CFLAGS  = $(CFLAGS) /O2 /GL /D "NDEBUG"
+# /LTCG : link time code generation (should generate smaller, faster code)
+LDFLAGS = $(LDFLAGS) /LTCG
+!else
+# /Od   : disable optimizations
+# /RTCs : stack frame runtime checking
+# /RTCu : ununitialized local usage checks
+CFLAGS = $(CFLAGS) /Od /RTCs /RTCu
+!endif
+
+# tell leveldb it's a windows build
+CFLAGS = $(CFLAGS) /D LEVELDB_PLATFORM_WINDOWS /D OS_WIN
+
+CFLAGS = $(CFLAGS) /I$(SRC)\include /I$(SRC)
+LIBS = $(LIBS) kernel32.lib
+
+LD = link.exe
+LDFLAGS = $(LDFLAGS) /nologo /DEBUG /RELEASE /opt:ref /opt:icf
+
+LEVELDB_OBJS = \
+	$(OT)\arena.obj $(OT)\block.obj $(OT)\block_builder.obj \
+	$(OT)\builder.obj $(OT)\c.obj $(OT)\cache.obj $(OT)\coding.obj \
+	$(OT)\comparator.obj $(OT)\crc32c.obj $(OT)\db_impl.obj \
+	$(OT)\db_iter.obj $(OT)\dbformat.obj $(OT)\env.obj \
+	$(OT)\env_win.obj $(OT)\filename.obj $(OT)\format.obj \
+	$(OT)\hash.obj $(OT)\histogram.obj $(OT)\iterator.obj \
+	$(OT)\log_reader.obj $(OT)\log_writer.obj $(OT)\logging.obj \
+	$(OT)\memtable.obj $(OT)\merger.obj $(OT)\options.obj \
+	$(OT)\port_win.obj $(OT)\repair.obj $(OT)\memenv.obj \
+	$(OT)\status.obj $(OT)\table.obj $(OT)\table_builder.obj \
+	$(OT)\filter_block.obj $(OT)\filter_policy.obj $(OT)\bloom.obj \
+	$(OT)\table_cache.obj $(OT)\two_level_iterator.obj \
+	$(OT)\version_edit.obj $(OT)\version_set.obj $(OT)\win_logger.obj \
+	$(OT)\write_batch.obj
+
+LEVELDBDLL_LIB = $(O)\libleveldb.lib
+LEVELDBDLL_DEF = $(SRC)\win\libleveldb.def
+LEVELDBDLL_OBJS = $(LEVELDB_OBJS)
+LEVELDBDLL_DLL = $(O)\libleveldb.dll
+
+CORRUPTION_TEST_OBJS = $(LEVELDB_OBJS) \
+	$(OT)\corruption_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+CORRUPTION_TEST_APP = $(O)\corruption_test.exe
+
+DBFORMAT_TEST_OBJS = $(LEVELDB_OBJS) \
+	$(OT)\dbformat_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+DBFORMAT_TEST_APP = $(O)\dbformat_test.exe
+
+DBBENCH_OBJS = $(LEVELDB_OBJS) \
+	$(OT)\db_bench.obj $(OT)\testutil.obj
+DBBENCH_APP = $(O)\db_bench.exe
+
+DBTEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\db_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+DBTEST_APP = $(O)\db_test.exe
+
+FILENAME_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\filename_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+FILENAME_TEST_APP = $(O)\filename_test.exe
+
+LOG_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\log_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+LOG_TEST_APP = $(O)\log_test.exe
+
+SKIPLIST_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\skiplist_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+SKIPLIST_TEST_APP = $(O)\skiplist_test.exe
+
+VERSIONEDIT_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\version_edit_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+VERSIONEDIT_TEST_APP = $(O)\version_edit_test.exe
+
+VERSIONSET_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\version_set_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+VERSIONSET_TEST_APP = $(O)\version_set_test.exe
+
+WRITEBATCH_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\write_batch_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+WRITEBATCH_TEST_APP = $(O)\write_batch_test.exe
+
+TABLE_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\table_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+TABLE_TEST_APP = $(O)\table_test.exe
+
+ARENA_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\arena_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+ARENA_TEST_APP = $(O)\arena_test.exe
+
+CACHE_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\cache_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+CACHE_TEST_APP = $(O)\cache_test.exe
+
+CODING_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\coding_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+CODING_TEST_APP = $(O)\coding_test.exe
+
+CRC32C_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\crc32c_test.obj $(OT)\testharness.obj $(OT)\testutil.obj $(OT)\coding.obj
+CRC32C_TEST_APP = $(O)\crc32c_test.exe
+
+ENV_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\env_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+ENV_TEST_APP = $(O)\env_test.exe
+
+MEMENV_TEST_OBJS = $(LEVELDB_OBJS)\
+	$(OT)\memenv_test.obj $(OT)\testharness.obj $(OT)\testutil.obj
+MEMENV_TEST_APP = $(O)\memenv_test.exe
+
+C_TEST_OBJS = $(LEVELDB_OBJS) \
+		$(OT)\c_test.obj 
+C_TEST_APP = $(O)\c_test.exe
+
+all: $(O) dll corruptiontest dbformattest dbbench dbtest filenametest \
+	logtest skiplisttest versionedittest versionsettest writebatchtest \
+	tabletest arenatest cachetest codingtest crc32ctest envtest \
+	memenvtest ctest
+
+dll: $(O) $(LEVELDBDLL_DLL)
+corruptiontest: $(O) $(CORRUPTION_TEST_APP) 
+dbformattest: $(O) $(DBFORMAT_TEST_APP)
+dbbench: $(O) $(DBBENCH_APP)
+dbtest: $(O) $(DBTEST_APP)
+filenametest: $(O) $(FILENAME_TEST_APP)
+logtest: $(O) $(LOG_TEST_APP)
+skiplisttest: $(O) $(SKIPLIST_TEST_APP)
+versionedittest: $(O) $(VERSIONEDIT_TEST_APP)
+versionsettest: $(O) $(VERSIONSET_TEST_APP)
+writebatchtest: $(O) $(WRITEBATCH_TEST_APP)
+tabletest: $(O) $(TABLE_TEST_APP) 
+arenatest: $(O) $(ARENA_TEST_APP) 
+cachetest: $(O) $(CACHE_TEST_APP)
+codingtest: $(O) $(CODING_TEST_APP) 
+crc32ctest: $(O) $(CRC32C_TEST_APP) 
+envtest: $(O) $(ENV_TEST_APP)
+memenvtest: $(O) $(MEMENV_TEST_APP)
+ctest: $(O) $(C_TEST_APP)
+
+clean: force
+	-rmdir /S /Q $(O)
+
+$(O): force
+	@if not exist $(O)  mkdir $(O)
+	@if not exist $(OT) mkdir $(OT)
+
+$(LEVELDBDLL_DLL): $(LEVELDBDLL_OBJS) $(LEVELDBDLL_DEF)
+	$(LD) /DLL $(LDFLAGS) $(LEVELDBDLL_OBJS) $(LIBS) /DEF:$(LEVELDBDLL_DEF) /IMPLIB:$(LEVELDBDLL_LIB) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(CORRUPTION_TEST_APP): $(CORRUPTION_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(DBFORMAT_TEST_APP): $(DBFORMAT_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(DBBENCH_APP): $(DBBENCH_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(DBTEST_APP): $(DBTEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(FILENAME_TEST_APP): $(FILENAME_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(LOG_TEST_APP): $(LOG_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(SKIPLIST_TEST_APP): $(SKIPLIST_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(VERSIONEDIT_TEST_APP): $(VERSIONEDIT_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(VERSIONSET_TEST_APP): $(VERSIONSET_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(WRITEBATCH_TEST_APP): $(WRITEBATCH_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(TABLE_TEST_APP): $(TABLE_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(ARENA_TEST_APP): $(ARENA_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(CACHE_TEST_APP): $(CACHE_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(CODING_TEST_APP): $(CODING_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(CRC32C_TEST_APP): $(CRC32C_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(ENV_TEST_APP): $(ENV_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(MEMENV_TEST_APP): $(MEMENV_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+$(C_TEST_APP): $(C_TEST_OBJS)
+	$(LD) $(LDFLAGS) $** $(O)\libleveldb.lib $(LIBS) /PDB:$*.pdb /OUT:$@ /SUBSYSTEM:CONSOLE
+
+{$(SRC)\util}.cc{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+{$(SRC)\db}.cc{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+{$(SRC)\db}.c{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+{$(SRC)\port}.cc{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+{$(SRC)\table}.cc{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+{$(SRC)\helpers\memenv}.cc{$(OT)}.obj::
+	$(CC) $(CFLAGS) /Fo$(OT)\ /Fd$(O)\vc80.pdb $<
+
+force: ;

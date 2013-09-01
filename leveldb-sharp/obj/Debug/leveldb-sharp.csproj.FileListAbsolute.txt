@@ -1,0 +1,8 @@
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp.dll.config
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\nunit.framework.dll
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\nunit.framework.xml
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp.csprojResolveAssemblyReference.cache
