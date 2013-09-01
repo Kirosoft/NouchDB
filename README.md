@@ -33,6 +33,8 @@ The master-slave MVCC replication model guarantees eventual data consistency. Th
 to continue operating with a local database while a network connection to a remote master database is offline 
 and then automatically synchronise once the master database becomes available once more.
 
+https://docs.google.com/a/kirosoft.co.uk/drawings/d/szsQ3jNOUSQQ1g1blxzTeAw/image?w=657&h=460&rev=228&ac=1
+
 
 V0.1 - Limitations
 
