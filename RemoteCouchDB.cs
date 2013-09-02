@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Web;
-using ServiceStack.Text;
+using LitJson;
 
 namespace NouchDB
 {
@@ -43,7 +43,7 @@ namespace NouchDB
         public string id { set; get; }
         public List<Changes> changes { set; get; }
         //public List<Doc> doc { set; get; }
-        public List<JsonObject> doc { set; get; }
+        public JsonData doc { set; get; }
     }
     
     public class ChangesSync
@@ -77,12 +77,11 @@ namespace NouchDB
             List<string> list = new List<string>();
             if (result != "[]")
             {
-                var d = JsonArrayObjects.Parse(result);
-
-                foreach (JsonObject db in d)
+                JsonData d = JsonMapper.ToObject(result);
+                foreach (JsonData db in d)
                     list.Add(db.ToString());
             }
-            return (list.ToArray());
+            return (list.ToArray());     
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace NouchDB
             string result = DoRequest(server + "/" + db, "GET");
 
             // The document count is a field within...
-            JsonObject d = JsonObject.Parse(result);
+            JsonData d = JsonMapper.ToObject(result);
             int count = int.Parse(d["doc_count"].ToString());
             return count;
         }
@@ -114,14 +113,12 @@ namespace NouchDB
 
             List<DocInfo> list = new List<DocInfo>();
 
-            JsonObject d = JsonObject.Parse(result);
-            JsonArrayObjects rows = d.ArrayObjects("rows");
-
-            foreach (JsonObject row in rows)
+            JsonData d = JsonMapper.ToObject(result);
+            foreach (JsonData row in d["rows"])
             {
                 DocInfo doc = new DocInfo();
                 doc.ID = row["id"].ToString();
-                doc.Revision = (row.ArrayObjects("value"))[0]["rev"].ToString();
+                doc.Revision = (row["value"])["rev"].ToString();
                 list.Add(doc);
             }
             return list.ToArray();
@@ -134,11 +131,12 @@ namespace NouchDB
         /// <param name="db">The database name</param>
         /// <param name="since">sequence number for the last checkpoint, defaults to 0 i.e. all changes</param>
         /// <returns>An array of DocInfo instances</returns>
-        public ChangesSync GetChanges(string server, string db,bool includeDocs = false,long since=0)
+        public JsonData GetChanges(string server, string db,bool includeDocs = false,long since=0)
         {
+            JsonData sync = null;
             string result = DoRequest(server + "/" + db + "/_changes?since=" + since.ToString() + "&include_docs=" + Convert.ToString(includeDocs).ToLower(), "GET");
 
-            var sync = JsonSerializer.DeserializeFromString<ChangesSync>(result);
+            sync= JsonMapper.ToObject(result);
 
             return sync;
         }

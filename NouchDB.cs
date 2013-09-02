@@ -7,7 +7,8 @@ using System.Diagnostics;
 using System.Collections;
 
 // JSON serialisation services
-using ServiceStack.Text;
+//using ServiceStack.Text;
+using LitJson;
 
 namespace NouchDB
 {
@@ -223,7 +224,7 @@ namespace NouchDB
         {
             var infoObj = new []{ docCount, sequenceCount };
 
-            return infoObj.ToJson();
+            return JsonMapper.ToJson(infoObj);
         }
 
         public string GetDoc(string docId)
@@ -275,16 +276,16 @@ namespace NouchDB
             {
                 lastSync = 0;
             }
-            ChangesSync docs = remoteDB.GetChanges(server, database, true, lastSync);
+            JsonData docs = remoteDB.GetChanges(server, database, true, lastSync);
 
-            foreach (Results result in docs.results)
+            foreach (JsonData result in docs["results"])
             {
-                string id = result.id;
-                string rev = result.doc[0]["_rev"];
-                result.doc[0].Remove("_rev");
-                result.doc[0].Remove("_id");
+                string id = (string)result["id"];
+                string rev = (string)result["changes"][0]["rev"];
+                //    //result.Remove("_rev");
+                //    //result.Remove("_id");
 
-                string doc = result.doc[0].ToJson() ;
+                string doc = result["doc"].ToJson();
 
                 try
                 {
@@ -294,12 +295,12 @@ namespace NouchDB
                 {
                     Debug.WriteLine(ee.ToString());
                 }
-            }
 
-            docsSync = docs.results.Count;
-            //Debug.WriteLine("Document sync: " + docs.results.Count);
-            //Debug.WriteLine(AllDocs());
-            SetLastSync(server+"/"+database,docs.last_seq);
+            }
+            docsSync = docs["results"].Count;
+            ///Debug.WriteLine("Document sync: " + docs.results.Count);
+            ////Debug.WriteLine(AllDocs());
+            SetLastSync(server+"/"+database,(int)docs["last_seq"]);
             
             docs = null;
             remoteDB = null;

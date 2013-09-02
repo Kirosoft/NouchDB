@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NouchDB;
-using ServiceStack.Text;
 using System.Collections.Generic;
 using System.Collections;
 using System.Diagnostics;
+using LitJson;
 
 namespace NouchDBTests
 {
@@ -24,7 +24,7 @@ namespace NouchDBTests
 
             var customer = new Customer { name = "Joe Bloggs", age = 31 };
 
-            string input = customer.ToJson();
+            string input = JsonMapper.ToJson(customer);
             nouchDB.PutDoc("doc_id1", input);
             string output = nouchDB.GetDoc("doc_id1");
             Assert.AreEqual(input, output);
@@ -32,12 +32,12 @@ namespace NouchDBTests
             string res = nouchDB.Info();
 
             var customer2 = new Customer { name = "Fred", age = 55 };
-            input = customer2.ToJson();
+            input = JsonMapper.ToJson(customer2);
             nouchDB.PutDoc("doc_id1", input);
             output = nouchDB.GetDoc("doc_id1");
             Assert.AreEqual(input, output);
 
-            long[] obj = nouchDB.Info().FromJson<long[]>() ;
+            List<int> obj = JsonMapper.ToObject<List<int>>(nouchDB.Info());
             Assert.AreEqual(1, obj[0]); // 1 doc
             Assert.AreEqual(2, obj[1]); // 2 sequences
         }
@@ -66,18 +66,16 @@ namespace NouchDBTests
 
             long lastSync = nouchDB.GetLastSync("http://127.0.0.1:5984/test");
 
-            ChangesSync docs = remoteDB.GetChanges("http://127.0.0.1:5984", "test", true, lastSync);
+            JsonData  docs = remoteDB.GetChanges("http://127.0.0.1:5984", "test", true, lastSync);
 
-            //JsonData data = JsonMapper.ToObject(allDocs);
-
-            foreach (Results result in docs.results)
+            foreach (JsonData result in docs["results"])
             {
-                string id = result.id;
-                string rev = result.doc[0]["_rev"];
-                result.doc[0].Remove("_rev");
-                result.doc[0].Remove("_id");
+                string id = (string) result["id"];
+                string rev = (string) result["changes"][0]["rev"];
+            //    //result.Remove("_rev");
+            //    //result.Remove("_id");
 
-                string doc = result.doc[0].ToJson() ;
+                string doc = result["doc"].ToJson() ;
 
                 try
                 {
@@ -89,9 +87,9 @@ namespace NouchDBTests
                 }
             }
 
-            Debug.WriteLine("Document sync: " + docs.results.Count);
+            Debug.WriteLine("Document sync: " + docs["results"].Count);
             Debug.WriteLine(nouchDB.AllDocs());
-            nouchDB.SetLastSync("http://127.0.0.1:5984/test",docs.last_seq);
+            nouchDB.SetLastSync("http://127.0.0.1:5984/test",(int) docs["last_seq"]);
 
             //nouchDB.Close();
         }
@@ -142,7 +140,7 @@ namespace NouchDBTests
 
             }
 
-            return docList.Keys.SerializeToString();
+            return JsonMapper.ToJson(docList.Keys);
         }
 
         [TestMethod]

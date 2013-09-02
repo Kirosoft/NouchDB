@@ -20,3 +20,14 @@ C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\NouchDBTests\bin\Debug\leveldb-s
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.csprojResolveAssemblyReference.cache
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.dll
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\NouchDBTests.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\NouchDB.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\NouchDB.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\ServiceStack.Text.xml
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.csprojResolveAssemblyReference.cache
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.dll.config

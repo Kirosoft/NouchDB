@@ -17,3 +17,11 @@ C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\bin\Debug\NouchDB.pdb
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\bin\Debug\leveldb-sharp.dll
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\bin\Debug\leveldb-sharp.pdb
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\bin\Debug\ServiceStack.Text.xml
+C:\Users\Mark\Documents\GitHub\NouchDB\bin\Debug\leveldb-sharp.dll.config
+C:\Users\Mark\Documents\GitHub\NouchDB\bin\Debug\NouchDB.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\bin\Debug\NouchDB.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\bin\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\bin\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\obj\Debug\NouchDB.csprojResolveAssemblyReference.cache
+C:\Users\Mark\Documents\GitHub\NouchDB\obj\Debug\NouchDB.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\obj\Debug\NouchDB.pdb
