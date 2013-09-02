@@ -1,4 +1,4 @@
-NouchDB
+#NouchDB
 
 I really like the CouchDB NoSQL database but I needed a lightweight embeddable database that would sync with a 
 master CouchDB database (the Erlang framework that CouchbDB relies on is a non-starter as an embedded system IMHO).
@@ -19,14 +19,14 @@ in a few weeks....
 
 In principle this is portable to all platforms that can support Mono but I am currently focused on Windows as a platform.
 
-Dependendant projects:
+##Dependendant projects:
 
 leveldb from google as a high performance low level key/value store (cross platform 'c' module) - https://code.google.com/p/leveldb/
 leveldb-sharp to convert level db 'c' module into a .NET compatible assembly (not yet tested on Mono) - https://github.com/meebey/leveldb-sharp
 servicestack.text for fast Json serialisation/deserialisation - https://github.com/ServiceStack/ServiceStack.Text
 
 
-Eventual consistency/Offline operation/Master-Slave synchronisation
+##Eventual consistency/Offline operation/Master-Slave synchronisation
 
 This project aims to build high performance no-sql database that can be embedded locally within .NET/mono projects.
 The master-slave MVCC replication model guarantees eventual data consistency. This is handy if you would like a DB
@@ -44,7 +44,7 @@ V0.1 - Limitations
 * Although it is planned to supported nested conflicting revisions - this is currently not fully implemented (see the Node class)
 
 
-Currently Supported features:
+##Currently Supported features:
 
 
 Data commits from the client are written directly to the remote DB instance and then the localDB is updated
@@ -53,7 +53,7 @@ data (as required). Locally committed data is currently lost when writtem locall
 master server can be updated via the couchdb http api.
 
 
-Local database commit example
+##Local database commit example
 
 NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
 
@@ -81,7 +81,7 @@ Assert.AreEqual(1, obj[0]); // 1 doc
 Assert.AreEqual(2, obj[1]); // 2 sequences
             
             
-Replication with remote server example (local database name is "fred", remote is stars)
+## Replication with remote server example (local database name is "fred", remote is stars)
 
  NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
 //nouchDB.Delete(new Options());
