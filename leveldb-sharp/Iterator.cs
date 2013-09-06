@@ -152,9 +152,21 @@ namespace LevelDB
             return isValid;
         }
 
+        public void Close()
+        {
+            if (DB.Handle != IntPtr.Zero)
+            {
+                Native.leveldb_iter_destroy(Handle);
+            }
+        }
+
         public void Dispose()
         {
             // ~Iterator() takes already care
+            if (DB.Handle != IntPtr.Zero)
+            {
+                Native.leveldb_iter_destroy(Handle);
+            }
         }
     }
 }

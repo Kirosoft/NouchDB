@@ -319,11 +319,14 @@ namespace NouchDB
                 }
             }
 
-            HttpWebResponse resp = req.GetResponse() as HttpWebResponse;
             string result;
-            using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+            using (HttpWebResponse resp = req.GetResponse() as HttpWebResponse)
             {
-                result = reader.ReadToEnd();
+                using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+                }
+
             }
             return result;
         }

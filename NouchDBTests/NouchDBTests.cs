@@ -40,6 +40,10 @@ namespace NouchDBTests
             List<int> obj = JsonMapper.ToObject<List<int>>(nouchDB.Info());
             Assert.AreEqual(1, obj[0]); // 1 doc
             Assert.AreEqual(2, obj[1]); // 2 sequences
+
+            Debug.Write(nouchDB.AllDocs());
+
+            //nouchDB.Close();
         }
 
         [TestMethod]

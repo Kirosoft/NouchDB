@@ -13,3 +13,11 @@ C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\leveldb-sharp\bin\x86\Debug\nuni
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.csprojResolveAssemblyReference.cache
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.dll
 C:\Users\Mark\Documents\leveldb\nouchdb\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\bin\x86\Debug\leveldb-sharp.dll.config
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\bin\x86\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\bin\x86\Debug\leveldb-sharp.pdb
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\bin\x86\Debug\nunit.framework.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\bin\x86\Debug\nunit.framework.xml
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.csprojResolveAssemblyReference.cache
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.dll
+C:\Users\Mark\Documents\GitHub\NouchDB\leveldb-sharp\obj\x86\Debug\leveldb-sharp.pdb

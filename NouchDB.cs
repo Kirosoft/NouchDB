@@ -30,7 +30,7 @@ namespace NouchDB
         private DB docStore = null;
         private DB attachStore = null;
         private DB attachBinaryStore = null;
-        private DB sequenceStore = null;
+        private DB  sequenceStore = null;
 
         DocCounter docCounter = null;
         SequenceCounter sequenceCounter = null;
@@ -349,10 +349,19 @@ namespace NouchDB
 
             while (sequenceList.MoveNext())
             {
-                Debug.WriteLine(sequenceList.Current.Value);
+                result += sequenceList.Current.Value;
             }
-            
+
+            // We have to close the iterator
+            ((Iterator)sequenceList).Close();
+
+            sequenceList = null;
             return result;
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return (IEnumerable<KeyValuePair<string,string>>) sequenceStore.GetEnumerator();
         }
     
     }
