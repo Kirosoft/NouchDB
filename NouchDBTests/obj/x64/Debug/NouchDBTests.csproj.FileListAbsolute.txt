@@ -1,0 +1,13 @@
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\NouchDBTests.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\NouchDB.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\ServiceStack.Text.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\LevelDB.Net.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\NouchDB.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\ServiceStack.Text.xml
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\x64\Debug\NouchDBTests.csprojResolveAssemblyReference.cache
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\x64\Debug\NouchDBTests.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\x64\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\nunit.framework.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\x64\Debug\nunit.framework.xml

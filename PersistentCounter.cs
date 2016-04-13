@@ -46,7 +46,7 @@ namespace NouchDB
         protected virtual long Get(string key)
         {
 
-            string res = store.Get(key);
+            string res = store.Get(ReadOptions.Default, key).ToString();
 
             counter = Convert.ToInt64(res);
 
@@ -57,7 +57,7 @@ namespace NouchDB
         {
             counter++;
 
-            store.Put(key, Convert.ToString(counter));
+            store.Put(WriteOptions.Default, key, Convert.ToString(counter));
 
             return counter;
         }
@@ -65,7 +65,7 @@ namespace NouchDB
         protected virtual void Reset(string key)
         {
             counter = 0;
-            store.Put(key, Convert.ToString(counter));
+            store.Put(WriteOptions.Default, key, Convert.ToString(counter));
 
         }
 

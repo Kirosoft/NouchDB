@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using LevelDB;
 using System.Diagnostics;
-using System.Collections;
-
-// JSON serialisation services
-//using ServiceStack.Text;
+using LevelDB;
 using LitJson;
 
 namespace NouchDB
@@ -80,11 +73,11 @@ namespace NouchDB
 
         public void Delete(Options options)
         {
-            DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\docStore");
-            DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\sequenceStore");
-            DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\attachStore");
-            DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\attachBinaryStore");
-            DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName);
+            //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\docStore");
+            //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\sequenceStore");
+            //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\attachStore");
+            //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName + "\\attachBinaryStore");
+            //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName);
 
         }
 
@@ -96,7 +89,7 @@ namespace NouchDB
 
             for (long f = lastUpdateSequence; f < sequenceCount; f++)
             {
-                string seq = sequenceStore.Get(f.ToString());
+                string seq = sequenceStore.Get(ReadOptions.Default, f.ToString()).ToString();
                 string change = seq.Split('+')[0];
                 string id = change.Split(',')[0];
                 string rev = change.Split(',')[1];
@@ -126,7 +119,7 @@ namespace NouchDB
             try
             {
                 // If possible try and retrieve any existing doc info for this id
-                string docInfoString = docStore.Get(docId);
+                string docInfoString = docStore.Get(ReadOptions.Default, docId).ToString();
 
                 if (docInfoString == null)
                 {
@@ -147,10 +140,10 @@ namespace NouchDB
                 string docInfoData = docInfo.ToJson();
                 docInfoData = docInfoData.Replace("\"", "");
 
-                docStore.Put(docId, docInfoData);
+                docStore.Put(WriteOptions.Default, docId, docInfoData);
 
                 // store a unique uuid linked with the doc id data
-                sequenceStore.Put(sequenceCount.ToString(), docInfo.getLatestSig()+"+"+data);
+                sequenceStore.Put(WriteOptions.Default, sequenceCount.ToString(), docInfo.getLatestSig() + "+" + data);
                 sequenceCount = sequenceCounter.Next();
 
             }
@@ -178,7 +171,7 @@ namespace NouchDB
             try
             {
                 // If possible try and retrieve any existing doc info for this id
-                string docInfoString = docStore.Get(docId);
+                string docInfoString = docStore.Get(ReadOptions.Default,docId).ToString();
 
                 if (docInfoString == null)
                 {
@@ -202,10 +195,10 @@ namespace NouchDB
                 string docInfoData = docInfo.ToJson();
                 docInfoData = docInfoData.Replace("\"", "");
 
-                docStore.Put(docId, docInfoData);
+                docStore.Put(WriteOptions.Default, docId, docInfoData);
 
                 // store a unique uuid linked with the doc id data
-                sequenceStore.Put(sequenceCount.ToString(), docInfo.getLatestSig() + "+" + data);
+                sequenceStore.Put(WriteOptions.Default, sequenceCount.ToString(), docInfo.getLatestSig() + "+" + data);
                 sequenceCount = sequenceCounter.Next();
 
             }
@@ -231,11 +224,11 @@ namespace NouchDB
         {
             string result = "";
 
-            string docInfoString = docStore.Get(docId);
+            string docInfoString = docStore.Get(ReadOptions.Default, docId).ToString();
             Node docInfo = Node.Parse(docInfoString);
 
             long latestSequence = docInfo.getLatestSequence();
-            result = sequenceStore.Get(latestSequence.ToString());
+            result = sequenceStore.Get(ReadOptions.Default, latestSequence.ToString()).ToString();
             result = result.Split('+')[1];
 
             return result;
@@ -252,10 +245,7 @@ namespace NouchDB
 
                 DB store = lockManager.GetDB(new Options(), BASE_PATH +this.storeName);
 
-                result = Convert.ToInt64(store.Get(uri));
-
-                
-
+                result = Convert.ToInt64(store.Get(ReadOptions.Default, uri));
             }
             catch (Exception ee)
             {
@@ -317,7 +307,7 @@ namespace NouchDB
 
                 DB store = lockManager.GetDB(new Options(), BASE_PATH + this.storeName);
 
-                store.Put(uri,lastSync.ToString());
+                store.Put(WriteOptions.Default, uri,lastSync.ToString());
 
             }
             catch (Exception ee)
@@ -331,7 +321,7 @@ namespace NouchDB
         {
             Node docInfo = null;
 
-            string docInfoString = docStore.Get(docId);
+            string docInfoString = docStore.Get(ReadOptions.Default, docId).ToString();
 
             if (docInfoString != null) { 
                 docInfo = Node.Parse(docInfoString);
@@ -344,26 +334,19 @@ namespace NouchDB
         public string AllDocs()
         {
             string result = "";
+            LevelDB.Iterator sequenceList = sequenceStore.NewIterator(ReadOptions.Default);
 
-            IEnumerator<KeyValuePair<string, string>> sequenceList = sequenceStore.GetEnumerator();
-
-            while (sequenceList.MoveNext())
+            while (sequenceList.Valid())
             {
-                result += sequenceList.Current.Value;
+                result += sequenceList.Value();
             }
 
             // We have to close the iterator
-            ((Iterator)sequenceList).Close();
-
             sequenceList = null;
+
             return result;
         }
 
-        public IEnumerable<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return (IEnumerable<KeyValuePair<string,string>>) sequenceStore.GetEnumerator();
-        }
-    
     }
     
     public class Options

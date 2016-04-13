@@ -61,7 +61,7 @@ namespace NouchDB
             {
 
                 // create the new DB
-                db = new DB(options.GetDBOptions(), filePath);
+                db = DB.Open(filePath, options.GetDBOptions());
                 // create the new lock object
                 DBLock lockObj = new DBLock();
                 lockObj.DB = db;

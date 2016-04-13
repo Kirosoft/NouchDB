@@ -1,8 +1,0 @@
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp.dll.config
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp-tests.dll
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\leveldb-sharp-tests.pdb
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp-tests.csprojResolveAssemblyReference.cache
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp-tests.dll
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\obj\Debug\leveldb-sharp-tests.pdb
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\ServiceStack.Text.dll
-C:\Users\Mark\Documents\leveldb\leveldb-sharp\bin\Debug\ServiceStack.Text.xml

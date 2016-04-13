@@ -31,16 +31,16 @@ C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.cspro
 C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.dll
 C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.pdb
 C:\Users\Mark\Documents\GitHub\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.dll.config
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.dll.config
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDBTests.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDBTests.pdb
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\ServiceStack.Text.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.pdb
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\ServiceStack.Text.xml
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\leveldb-sharp.pdb
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.csprojResolveAssemblyReference.cache
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\LevelDB.Net.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.xml
