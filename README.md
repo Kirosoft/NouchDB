@@ -1,16 +1,10 @@
-#NouchDB
+# NouchDB
 
-I really like the CouchDB NoSQL database but I needed a lightweight embeddable database that would sync with a 
-master CouchDB database (the Erlang framework that CouchbDB relies on is a non-starter as an embedded system IMHO).
-PouchDB is great but is web only (javascript). I could not find .NET version of PouchDB so this project is
-designed to fill my (probably) very niche requirement. I also needed Mono 2.6 compatability to work 
-within a Unity3D project. My plan is to use this module as the basis of network synchronisable objects in a 
-Unity3D MMO game client (so no funky .NET 4+ async calls allowed). I will probably release a Unity version of this
-in a few weeks....
-
+Embedded .NET NoSql datastore that will synchronise with CouchDB server (TODO: other stores such as MongoDB/Redis).
 
 * .NET 3.5+/Mono 2.6+ compatible
-* Embedded high performance key/value store based upon levelDB
+* Embedded high performance key/value store based upon levelDB (build as a native DLL)
+* Custom version of leveldb-sharp with c# bindings to the levelDB dll
 * Master -> Slave replication with a CouchDB server
 * MVCC - multiversion concurrency control - each update causes a new record commit. No data is lost we just keep track  
   of the latest revision
@@ -21,9 +15,11 @@ In principle this is portable to all platforms that can support Mono but I am cu
 
 ##Dependendant projects:
 
-leveldb from google as a high performance low level key/value store (cross platform 'c' module) - https://code.google.com/p/leveldb/
-leveldb-sharp to convert level db 'c' module into a .NET compatible assembly (not yet tested on Mono) - https://github.com/meebey/leveldb-sharp
-servicestack.text for fast Json serialisation/deserialisation - https://github.com/ServiceStack/ServiceStack.Text
+This project incorporates code from the following other projects:
+
+[leveldb from google as a high performance low level key/value store (cross platform 'c' module)](https://code.google.com/p/leveldb/)
+[leveldb-sharp to convert level db 'c' module into a .NET compatible assembly (not yet tested on Mono)](https://github.com/meebey/leveldb-sharp)
+[servicestack.text for fast Json serialisation/deserialisation](https://github.com/ServiceStack/ServiceStack.Text)
 
 
 ##Eventual consistency/Offline operation/Master-Slave synchronisation
@@ -33,7 +29,7 @@ The master-slave MVCC replication model guarantees eventual data consistency. Th
 to continue operating with a local database while a network connection to a remote master database is offline 
 and then automatically synchronise once the master database becomes available once more.
 
-https://docs.google.com/a/kirosoft.co.uk/drawings/d/szsQ3jNOUSQQ1g1blxzTeAw/image?w=657&h=460&rev=228&ac=1
+![Image of NouchDB](https://docs.google.com/a/kirosoft.co.uk/drawings/d/szsQ3jNOUSQQ1g1blxzTeAw/image?w=657&h=460&rev=228&ac=1)
 
 
 V0.1 - Limitations

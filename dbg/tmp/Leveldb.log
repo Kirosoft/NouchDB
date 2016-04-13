@@ -1,13 +1,4 @@
-﻿Build started 9/5/2013 8:18:47 PM.
-     1>Project "C:\Users\Mark\Documents\GitHub\NouchDB\leveldb\win\Leveldb.vcxproj" on node 2 (Build target(s)).
-     1>Build:
-         nmake -f makefile.msvc CFG=dbg SRC=.. all
-         
-         Microsoft (R) Program Maintenance Utility Version 11.00.51106.1
-         Copyright (C) Microsoft Corporation.  All rights reserved.
-         
-     1>Done Building Project "C:\Users\Mark\Documents\GitHub\NouchDB\leveldb\win\Leveldb.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.15
+﻿  
+  Microsoft (R) Program Maintenance Utility Version 11.00.60610.1
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
