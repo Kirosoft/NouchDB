@@ -1,6 +1,0 @@
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\bin\Debug\NouchDB.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\bin\Debug\NouchDB.pdb
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\bin\Debug\LevelDB.Net.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\obj\Debug\NouchDB.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\obj\Debug\NouchDB.pdb
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\obj\Debug\NouchDB.csprojResolveAssemblyReference.cache
