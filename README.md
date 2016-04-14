@@ -2,21 +2,18 @@
 
 Embedded .NET NoSql datastore that will synchronise with CouchDB server (TODO: other stores such as MongoDB/Redis).
 
-* .NET 3.5+/Mono 2.6+ compatible
-* Embedded high performance key/value store based upon levelDB (build as a native DLL)
-* Custom version of leveldb-sharp with c# bindings to the levelDB dll
+* Immutable embedded fast JSON datastore
+* Based upon the superfast levelDB 
 * Master -> Slave replication with a CouchDB server
 * MVCC - multiversion concurrency control - each update causes a new record commit. No data is lost we just keep track  
   of the latest revision
-* Atomic commit support via leveldb (supports batch commits)
+* Atomic commit support 
+* Supports batch operations
 * Simple POCO class persistance model (uses service stack POCO/json serialisation methods)
-
-In principle this is portable to all platforms that can support Mono but I am currently focused on Windows as a platform.
-
 
 ##Eventual consistency/Offline operation/Master-Slave synchronisation
 
-This project aims to build high performance no-sql database that can be embedded locally within .NET/mono projects.
+This project aims to build high performance no-sql immutable JSON database that can be embedded locally within .NET/mono projects.
 The master-slave MVCC replication model guarantees eventual data consistency. This is handy if you would like a DB
 to continue operating with a local database while a network connection to a remote master database is offline 
 and then automatically synchronise once the master database becomes available once more.
@@ -37,8 +34,8 @@ V0.1 - Limitations
 
 Data commits from the client are written directly to the remote DB instance and then the localDB is updated
 locally via replication. So, in this model the server is the master and many slaves remain consistent with the server
-data (as required). Locally committed data is currently lost when writtem locally (no slave master replication), but the
-master server can be updated via the couchdb http api.
+data (as required). Locally committed data is currently lost when writtem locally (no slave -> master replication), 
+but the master server can be updated via the couchdb http api.
 
 
 ##Local database commit example
