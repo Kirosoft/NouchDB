@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LevelDB;
 
 namespace NDB
@@ -18,7 +16,7 @@ namespace NDB
         }
     }
 
-    // Singleton object to manage access to underlying DB objects
+    // Singleton object to manage access to underlying level.db stores
     // Within an existing DB context - TODO?
     // TODO: Add multi-thread safety
     public class DBLockManager

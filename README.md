@@ -13,14 +13,6 @@ Embedded .NET NoSql datastore that will synchronise with CouchDB server (TODO: o
 
 In principle this is portable to all platforms that can support Mono but I am currently focused on Windows as a platform.
 
-##Dependendant projects:
-
-This project incorporates code from the following other projects:
-
-[leveldb from google as a high performance low level key/value store (cross platform 'c' module)](https://code.google.com/p/leveldb/)
-[leveldb-sharp to convert level db 'c' module into a .NET compatible assembly (not yet tested on Mono)](https://github.com/meebey/leveldb-sharp)
-[servicestack.text for fast Json serialisation/deserialisation](https://github.com/ServiceStack/ServiceStack.Text)
-
 
 ##Eventual consistency/Offline operation/Master-Slave synchronisation
 
@@ -53,10 +45,6 @@ master server can be updated via the couchdb http api.
 
 NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
 
-nouchDB.Delete(new Options());
-
-nouchDB.Open(new Options(), "fred");
-
 var customer = new Customer { name = "Joe Bloggs", age = 31 };
 
 string input = customer.ToJson();
@@ -80,8 +68,6 @@ Assert.AreEqual(2, obj[1]); // 2 sequences
 ## Replication with remote server example (local database name is "fred", remote is stars)
 
  NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
-//nouchDB.Delete(new Options());
-nouchDB.Open(new Options(), "fred");
 
 Debug.WriteLine("Documents synchronised: "+Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984","stars")));
 Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984", "stars")));
