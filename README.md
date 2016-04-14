@@ -43,6 +43,7 @@ master server can be updated via the couchdb http api.
 
 ##Local database commit example
 
+```
 NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
 
 var customer = new Customer { name = "Joe Bloggs", age = 31 };
@@ -63,10 +64,11 @@ Assert.AreEqual(input, output);
 long[] obj = nouchDB.Info().FromJson<long[]>() ;
 Assert.AreEqual(1, obj[0]); // 1 doc
 Assert.AreEqual(2, obj[1]); // 2 sequences
-            
+```            
             
 ## Replication with remote server example (local database name is "fred", remote is stars)
 
+```
  NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
 
 Debug.WriteLine("Documents synchronised: "+Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984","stars")));
@@ -75,3 +77,4 @@ Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateW
 Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984", "stars")));
 //Debug.WriteLine(nouchDB.AllDocs());
 
+```
