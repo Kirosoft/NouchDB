@@ -2,60 +2,68 @@
 using System.Diagnostics;
 using LevelDB;
 using LitJson;
+using System.Collections.Generic;
 
-namespace NouchDB
+namespace NDB
 {
     public class NouchDB 
     {
-        const string DOC_STORE = "document-store";
-        const string BY_SEQ_STORE = "by-sequence";
-        const string ATTACH_STORE = "attach-store";
-        const string ATTACH_BINARY_STORE = "attach-binary-store";
-        const string BASE_PATH = "c:\\temp\\";
+        private const string DOC_STORE = "document-store";
+        private const string BY_SEQ_STORE = "by-sequence";
+        private const string ATTACH_STORE = "attach-store";
+        private const string ATTACH_BINARY_STORE = "attach-binary-store";
+        public const string BASE_PATH = "\\temp\\NouchDB.Data\\";
 
         bool opened = false;
-        private Options options = null;
-        string storeName = "";
+        private Options defaultDBOptions = new Options();
+        public string storeName { get; private set; }
 
         private long sequenceCount = 0;
         private long docCount = 0;
 
+        private string storeBasePath;
         private DB docStore = null;
         private DB attachStore = null;
         private DB attachBinaryStore = null;
-        private DB  sequenceStore = null;
+        private DB sequenceStore = null;
 
-        DocCounter docCounter = null;
-        SequenceCounter sequenceCounter = null;
+        private DocCounter docCounter = null;
+        private SequenceCounter sequenceCounter = null;
 
         public NouchDB()
         {
+            storeName = "NDB-" + new Random().Next(0, int.MaxValue).ToString();
+            Open(storeName);
         }
 
-        public NouchDB(string storeName)
+        public NouchDB(string storeName, string basePath = BASE_PATH)
+        {
+            Open(storeName, basePath);
+        }
+
+        public void Open(string storeName, string basePath = BASE_PATH, Dictionary<string, string> options = null)
         {
             this.storeName = storeName;
-
-        }
-
-        public void Open(Options options, string storeName) {
-            this.options = options;
-            this.storeName = storeName;
-
             DBLockManager manager = DBLockManager.Instance;
-            
+
+            if (!basePath.EndsWith("\\"))
+            {
+                basePath += "\\";
+            }
+            this.storeBasePath = basePath;
+
             // stores the revision history for a given document
-            docStore = manager.GetDB(options, BASE_PATH+storeName+"\\docStore");
+            docStore = manager.GetDB(basePath + storeName+"\\docStore");
   
             // stores the specific revision id and data for a given document
-            sequenceStore = manager.GetDB(options, BASE_PATH + storeName + "\\sequenceStore");
+            sequenceStore = manager.GetDB(basePath + storeName + "\\sequenceStore");
 
-            attachStore = manager.GetDB(options, BASE_PATH + storeName + "\\attachStore");
-            attachBinaryStore = manager.GetDB(options, BASE_PATH + storeName + "\\attachBinaryStore");
+            attachStore = manager.GetDB(basePath + storeName + "\\attachStore");
+            attachBinaryStore = manager.GetDB(basePath + storeName + "\\attachBinaryStore");
 
-            docCounter = new DocCounter(options, BASE_PATH + storeName);
+            docCounter = new DocCounter( basePath + storeName);
             docCount = docCounter.Get();
-            sequenceCounter = new SequenceCounter(options, BASE_PATH + storeName);
+            sequenceCounter = new SequenceCounter(basePath + storeName);
             sequenceCount= sequenceCounter.Get();
 
             opened = true;
@@ -80,7 +88,6 @@ namespace NouchDB
             //DB.Destroy(options.GetDBOptions(), BASE_PATH + storeName);
 
         }
-
 
         public string Changes(long lastUpdateSequence = 0)
         {
@@ -118,10 +125,10 @@ namespace NouchDB
 
             try
             {
+                Slice docInfoString = "";
                 // If possible try and retrieve any existing doc info for this id
-                string docInfoString = docStore.Get(ReadOptions.Default, docId).ToString();
 
-                if (docInfoString == null)
+                if (!docStore.TryGet(ReadOptions.Default, docId, out docInfoString)) 
                 {
                     // Insert mode: create a new root document
                     docInfo = new Node(docId, data, sequenceCount);
@@ -130,7 +137,7 @@ namespace NouchDB
                 else
                 {
                     // Update mode: create a new revision entry
-                    docInfo = Node.Parse(docInfoString);
+                    docInfo = Node.Parse(docInfoString.ToString());
                     // add a new document version
                     docInfo.addVersion(data, sequenceCount);
                 }
@@ -145,7 +152,6 @@ namespace NouchDB
                 // store a unique uuid linked with the doc id data
                 sequenceStore.Put(WriteOptions.Default, sequenceCount.ToString(), docInfo.getLatestSig() + "+" + data);
                 sequenceCount = sequenceCounter.Next();
-
             }
             catch (Exception ee)
             {
@@ -154,8 +160,6 @@ namespace NouchDB
             finally
             {
             }
-
-
         }
 
         /// <summary>
@@ -200,7 +204,6 @@ namespace NouchDB
                 // store a unique uuid linked with the doc id data
                 sequenceStore.Put(WriteOptions.Default, sequenceCount.ToString(), docInfo.getLatestSig() + "+" + data);
                 sequenceCount = sequenceCounter.Next();
-
             }
             catch (Exception ee)
             {
@@ -209,8 +212,6 @@ namespace NouchDB
             finally
             {
             }
-
-
         }
 
         public string Info()
@@ -243,7 +244,7 @@ namespace NouchDB
             {
                 DBLockManager lockManager = DBLockManager.Instance;
 
-                DB store = lockManager.GetDB(new Options(), BASE_PATH +this.storeName);
+                DB store = lockManager.GetDB(BASE_PATH +this.storeName);
 
                 result = Convert.ToInt64(store.Get(ReadOptions.Default, uri));
             }
@@ -300,15 +301,13 @@ namespace NouchDB
 
         public void SetLastSync(string uri,long lastSync)
         {
-
             try
             {
                 DBLockManager lockManager = DBLockManager.Instance;
 
-                DB store = lockManager.GetDB(new Options(), BASE_PATH + this.storeName);
+                DB store = lockManager.GetDB(BASE_PATH + this.storeName);
 
                 store.Put(WriteOptions.Default, uri,lastSync.ToString());
-
             }
             catch (Exception ee)
             {
@@ -348,27 +347,5 @@ namespace NouchDB
         }
 
     }
-    
-    public class Options
-    {
-        public bool createIfMissing = true;
-        public string valueEncoding = "json";
-        public string name = "";
-
-        // Build a LevelDb.Options object from this one
-        public LevelDB.Options GetDBOptions()
-        {
-            LevelDB.Options opts = new LevelDB.Options();
-
-            if (createIfMissing)
-                opts.CreateIfMissing = true;
-
-            return opts;
-        }
-
-
-    }
-
-
 }
 

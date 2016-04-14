@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LevelDB;
+using System.Collections.Generic;
 
-namespace NouchDB
+namespace NDB
 {
+    // Manages a persistent counter within a store/db
+    // Note: this class operates as a cache value for a single counter
+    // The store may contain other counters
     public class PersistentCounter
     {
         private DB store = null;
@@ -24,31 +25,29 @@ namespace NouchDB
             }
         }
 
-        public PersistentCounter(string storePath)
+        public PersistentCounter(string storePath, string key, Dictionary<string, string> options = null)
         {
-            Init(new Options(), storePath);
+            Init(storePath, key, options);
         }
 
-        public PersistentCounter(Options options, string storePath)
-        {
-
-            Init(options, storePath);
-        }
-
-        public void Init(Options options, string storePath)
+        public void Init(string storePath, string key, Dictionary<string, string> options = null)
         {
             DBLockManager lockManager = DBLockManager.Instance;
-
-            store = lockManager.GetDB(options, storePath);
-
+            store = lockManager.GetDB(storePath);
+            this.storePath = storePath;
         }
 
         protected virtual long Get(string key)
         {
+            Slice outValue = new Slice();
+            outValue = "0";
 
-            string res = store.Get(ReadOptions.Default, key).ToString();
-
-            counter = Convert.ToInt64(res);
+            if (!store.TryGet(ReadOptions.Default, key, out outValue))
+            {
+                // Key does not exist, initialise to 0
+                store.Put(WriteOptions.Default, key, outValue);
+            }
+            counter = Convert.ToInt64(outValue.ToString());
 
             return counter;
         }
@@ -56,7 +55,6 @@ namespace NouchDB
         protected virtual long Next(string key)
         {
             counter++;
-
             store.Put(WriteOptions.Default, key, Convert.ToString(counter));
 
             return counter;
@@ -66,7 +64,6 @@ namespace NouchDB
         {
             counter = 0;
             store.Put(WriteOptions.Default, key, Convert.ToString(counter));
-
         }
 
         public virtual void Close()
@@ -85,8 +82,8 @@ namespace NouchDB
         private const string DOC_COUNT_KEY = "_local_doc_count";
 
 
-        public DocCounter(Options options, string storePath)
-            : base(options, storePath)
+        public DocCounter(string storePath, Dictionary<string, string> options = null)
+            : base(storePath, DOC_COUNT_KEY, options)
         {
             Get(DOC_COUNT_KEY);
         }
@@ -115,15 +112,14 @@ namespace NouchDB
     {
         private const string UPDATE_SEQ_KEY = "_local_last_update_seq";
 
-        public SequenceCounter(Options options, string storePath)
-            : base(options, storePath)
+        public SequenceCounter(string storePath, Dictionary<string, string> options = null)
+            : base(storePath, UPDATE_SEQ_KEY, options)
         {
             Get(UPDATE_SEQ_KEY);
         }
 
         public long Get()
         {
-
             return base.Get(UPDATE_SEQ_KEY);
         }
 

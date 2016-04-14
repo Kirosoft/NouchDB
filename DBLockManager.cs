@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using LevelDB;
 
-namespace NouchDB
+namespace NDB
 {
     public class DBLock
     {
@@ -19,16 +19,15 @@ namespace NouchDB
     }
 
     // Singleton object to manage access to underlying DB objects
+    // Within an existing DB context - TODO?
     // TODO: Add multi-thread safety
     public class DBLockManager
     {
-        Dictionary<string, DBLock> dbCache = new Dictionary<string, DBLock>();
-
+        private Dictionary<string, DBLock> dbCache = new Dictionary<string, DBLock>();
         public static DBLockManager instance;
 
         private DBLockManager()
         {
-
         }
 
         public static DBLockManager Instance
@@ -43,7 +42,7 @@ namespace NouchDB
             }
         }
 
-        public DB GetDB(Options options, string filePath)
+        public DB GetDB(string filePath, Dictionary<string, string> options = null)
         {
             DB db = null;
 
@@ -59,9 +58,11 @@ namespace NouchDB
             }
             else
             {
-
                 // create the new DB
-                db = DB.Open(filePath, options.GetDBOptions());
+                Options levelDBOptions = new Options();
+                levelDBOptions.CreateIfMissing = true;
+
+                db = DB.Open(filePath, levelDBOptions);
                 // create the new lock object
                 DBLock lockObj = new DBLock();
                 lockObj.DB = db;
@@ -77,8 +78,7 @@ namespace NouchDB
             if (dbCache.ContainsKey(filePath))
             {
                 DBLock lockObj = dbCache[filePath];
-                int lockCount = lockObj.lockCount;
-                lockObj.lockCount = lockObj.lockCount - 1;
+                lockObj.lockCount -= 1;
 
                 if (lockObj.lockCount > 0)
                 {
@@ -89,15 +89,12 @@ namespace NouchDB
                     dbCache.Remove(filePath);
                     lockObj.DB.Dispose();
                 }
-
             }
             else
             {
                 throw new DBNotFoundException("Requested DB not found or already closed: " + filePath);
             }
         }
-
-
     }
 
 

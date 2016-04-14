@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using LitJson;
 
-namespace NouchDB
+namespace NDB
 {
 
     /// <summary>

@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NouchDB;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NDB;
 
 namespace NouchDBTests
 {
@@ -13,7 +12,7 @@ namespace NouchDBTests
 
             string filePath = "c:\\temp\\test";
 
-            DocCounter counter = new DocCounter(new Options(), filePath);
+            DocCounter counter = new DocCounter(filePath);
             counter.Reset();
             long count = counter.Get();
             Assert.AreEqual(0, count);
@@ -25,7 +24,7 @@ namespace NouchDBTests
 
             counter = null;
 
-            counter = new DocCounter(new Options(), filePath);
+            counter = new DocCounter(filePath);
             count = counter.Get();
             Assert.AreEqual(2, count);
 
@@ -37,7 +36,7 @@ namespace NouchDBTests
 
             string filePath = "c:\\temp\\test";
 
-            SequenceCounter counter = new SequenceCounter(new Options(), filePath);
+            SequenceCounter counter = new SequenceCounter(filePath);
             counter.Reset();
             long count = counter.Get();
             Assert.AreEqual(0, count);
@@ -49,7 +48,7 @@ namespace NouchDBTests
 
             counter = null;
 
-            counter = new SequenceCounter(new Options(), filePath);
+            counter = new SequenceCounter(filePath);
             count = counter.Get();
             Assert.AreEqual(2, count);
 
@@ -61,8 +60,8 @@ namespace NouchDBTests
 
             string filePath = "c:\\temp\\test";
 
-            DocCounter docCounter= new DocCounter(new Options(), filePath);
-            SequenceCounter sequenceCounter= new SequenceCounter(new Options(), filePath);
+            DocCounter docCounter= new DocCounter(filePath);
+            SequenceCounter sequenceCounter= new SequenceCounter(filePath);
 
             docCounter.Reset();
             sequenceCounter.Reset();
@@ -79,7 +78,7 @@ namespace NouchDBTests
 
             docCounter.Close();
 
-            docCounter = new DocCounter(new Options(), filePath);
+            docCounter = new DocCounter(filePath);
             docCount = docCounter.Get();
             Assert.AreEqual(1, docCount);
 

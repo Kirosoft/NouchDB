@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NouchDB;
+using NDB;
 using System.Collections.Generic;
 using System.Collections;
 using System.Diagnostics;
@@ -15,12 +15,10 @@ namespace NouchDBTests
         public void SimpleInsertAndUpdate()
         {
 
+            NouchDB nouchDB = new NouchDB();
 
-            NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
-
-            nouchDB.Delete(new Options());
-
-            nouchDB.Open(new Options(), "fred");
+            //nouchDB.Delete(new Options());
+            //nouchDB.Open(dbName);
 
             var customer = new Customer { name = "Joe Bloggs", age = 31 };
 
@@ -51,7 +49,6 @@ namespace NouchDBTests
         {
             RemoteDB remoteDB = new RemoteDB();
             remoteDB.GetAllDocuments("http://127.0.0.1:5984", "test");
-
         }
 
         [TestMethod]
@@ -61,9 +58,8 @@ namespace NouchDBTests
 
             //DocInfo[] info = remoteDB.GetAllDocuments("http://127.0.0.1:5984", "test");
 
-            NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
+            NouchDB nouchDB = new NouchDB();
             //nouchDB.Delete(new Options());
-            nouchDB.Open(new Options(), "fred");
             //Debug.WriteLine(nouchDB.Changes());
             //string res = RevsDiff(nouchDB, remoteDB, info);
             //res = "{\"keys\":" + res + "}";
@@ -101,9 +97,8 @@ namespace NouchDBTests
         [TestMethod]
         public void ReplicationTest1()
         {
-            NouchDB.NouchDB nouchDB = new NouchDB.NouchDB("fred");
+            NouchDB nouchDB = new NouchDB();
             //nouchDB.Delete(new Options());
-            nouchDB.Open(new Options(), "fred");
 
             Debug.WriteLine("Documents synchronised: "+Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984","stars")));
             Debug.WriteLine("Documents synchronised: " + Convert.ToString(nouchDB.ReplicateWith("http://127.0.0.1:5984", "stars")));
@@ -112,7 +107,7 @@ namespace NouchDBTests
             //Debug.WriteLine(nouchDB.AllDocs());
         }
 
-        public string RevsDiff(NouchDB.NouchDB db, RemoteDB remoteDB, DocInfo[] docInfo)
+        public string RevsDiff(NDB.NouchDB db, RemoteDB remoteDB, DocInfo[] docInfo)
         {
             var result = "[";
             Dictionary<string,string> docList = new Dictionary<string,string>();

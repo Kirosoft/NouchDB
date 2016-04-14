@@ -39,8 +39,8 @@ C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Deb
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.csprojResolveAssemblyReference.cache
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\obj\Debug\NouchDBTests.pdb
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.dll
+C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.xml
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\LevelDB.Net.dll
 C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\NouchDB.pdb
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.dll
-C:\Users\Mark\Documents\Visual Studio 2015\Projects\NouchDB\NouchDBTests\bin\Debug\nunit.framework.xml

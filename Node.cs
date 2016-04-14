@@ -6,7 +6,7 @@ using System.Collections;
 using System.Diagnostics;
 using LitJson;
 
-namespace NouchDB
+namespace NDB
 {
     // Recursive Node definition designed to hold a revision tree for a given document id
     public class Node : IEnumerable
