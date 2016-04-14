@@ -9,7 +9,7 @@ Embedded .NET NoSql datastore that will synchronise with CouchDB server (TODO: o
   of the latest revision
 * Atomic commit support 
 * Supports batch operations
-* Simple POCO class persistance model (uses service stack POCO/json serialisation methods)
+* Simple POCO class persistance model
 
 ##Eventual consistency/Offline operation/Master-Slave synchronisation
 
