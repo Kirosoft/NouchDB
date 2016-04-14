@@ -48,23 +48,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBLockManager.cs" />
-    <Compile Include="LitJson\IJsonWrapper.cs" />
-    <Compile Include="LitJson\JsonData.cs" />
-    <Compile Include="LitJson\JsonException.cs" />
-    <Compile Include="LitJson\JsonMapper.cs" />
-    <Compile Include="LitJson\JsonMockWrapper.cs" />
-    <Compile Include="LitJson\JsonReader.cs" />
-    <Compile Include="LitJson\JsonWriter.cs" />
-    <Compile Include="LitJson\Lexer.cs" />
-    <Compile Include="LitJson\ParserToken.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="NouchDB.cs" />
-    <Compile Include="PersistentCounter.cs" />
+    <Compile Include="source\DBLockManager.cs" />
+    <Compile Include="source\LitJson\IJsonWrapper.cs" />
+    <Compile Include="source\LitJson\JsonData.cs" />
+    <Compile Include="source\LitJson\JsonException.cs" />
+    <Compile Include="source\LitJson\JsonMapper.cs" />
+    <Compile Include="source\LitJson\JsonMockWrapper.cs" />
+    <Compile Include="source\LitJson\JsonReader.cs" />
+    <Compile Include="source\LitJson\JsonWriter.cs" />
+    <Compile Include="source\LitJson\Lexer.cs" />
+    <Compile Include="source\LitJson\ParserToken.cs" />
+    <Compile Include="source\Node.cs" />
+    <Compile Include="source\NouchDB.cs" />
+    <Compile Include="source\PersistentCounter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteCouchDB.cs" />
-    <Compile Include="ReplicationInfo.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="source\RemoteCouchDB.cs" />
+    <Compile Include="source\ReplicationInfo.cs" />
+    <Compile Include="source\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
